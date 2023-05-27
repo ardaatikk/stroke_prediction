@@ -32,28 +32,28 @@ fig.suptitle('Exploratory Data Analysis (Window 1)')
 
 # Creating a boxplot to see the link between heart disease and age
 sns.boxplot(x = real_data['heart_disease'], y = real_data['age'], palette= ["blue", "red"], ax=axs[0, 0])
-axs[0, 0].set_title("heart disease vs age") 
+axs[0, 0].set_title("Heart Disease vs Age") 
 
 # Creating a barplot to see the link between heart disease and smoking status
 sns.barplot(x = real_data['heart_disease'], y = real_data['smoking_status'], ax=axs[0, 1])
-axs[0, 1].set_title("heart disease vs smoking status")
+axs[0, 1].set_title("Heart Disease vs Smoking Status")
 
 # Creating a barplot to see the link between smoking status and stroke
-sns.barplot(x = real_data['smoking_status'], y = real_data['stroke'], ax=axs[0, 2])
-axs[0, 2].set_title("smoking status vs stroke")
+sns.barplot(x = real_data['stroke'], y = real_data['smoking_status'], ax=axs[0, 2])
+axs[0, 2].set_title("Stroke vs Smoking Status")
 
 # Creating a barplot to see the link between residence type and stroke
 sns.barplot(x = real_data['Residence_type'], y = real_data['stroke'], ax=axs[1, 0])
-axs[1, 0].set_title("residence type vs stroke")
+axs[1, 0].set_title("Residence Type vs Stroke")
 
 # Creating a lineplot to see the link between heart disease and bmi
 sns.lineplot(x = real_data['heart_disease'], y = real_data['bmi'], ax=axs[1, 1])
-axs[1, 1].set_title("heart disease vs bmi")
+axs[1, 1].set_title("Heart Disease vs BMI")
 # The higher the bmi, the higher the likelihood of developing heart disease.
 
 # Creating a boxplot to see the link between heart disease and average glucose level
 sns.boxplot(x = real_data['heart_disease'], y = real_data['avg_glucose_level'], palette= ["blue", "red"], ax=axs[1, 2])
-axs[1, 2].set_title("heart disease vs avg glucose level")
+axs[1, 2].set_title("Heart Disease vs Avg Glucose Level")
 
 # Creating a scatterplot with a jointdistribution plot to see the effect of the average glucose level and bmi on the stroke
 sns.scatterplot(x = real_data['bmi'], y = real_data['avg_glucose_level'], hue = real_data['stroke'], ax=axs[2, 0])
@@ -76,7 +76,7 @@ fig.suptitle('Exploratory Data Analysis (Window 2)')
 
 # Creating a barplot to see the link between hypertension and heart disease
 sns.barplot(x= real_data['hypertension'], y=real_data['heart_disease'], palette= ["blue", "red"], ax=axs[0, 0]) 
-axs[0, 0].set_title("hypertension vs heart disease")
+axs[0, 0].set_title("Hypertension vs Heart Disease")
 
 # Creating a barplot to see the link between gender and stroke
 sns.barplot(x = real_data['gender'], y = real_data['stroke'], palette= ["blue", "red"], ax=axs[0, 1])
