@@ -54,6 +54,18 @@ print("Training Classification Report (Regressor, without MinMaxScaler):\n", tra
 print("Validation Accuracy (Regressor, without MinMaxScaler):", val_accuracy_reg)
 print("Validation Classification Report (Regressor, without MinMaxScaler):\n", val_report_reg)
 
+# Filtering outliers in 'avg_glucose_level' and 'bmi' columns in train_data
+filtered_entries = np.array([True] * len(train_data))
+for col in ['avg_glucose_level','bmi']:
+    Q1 = train_data[col].quantile(0.25)
+    Q3 = train_data[col].quantile(0.75)
+    IQR = Q3 - Q1
+    low_limit = Q1 - (IQR * 1.5)
+    high_limit = Q3 + (IQR * 1.5)
+
+    filtered_entries = ((train_data[col] >= low_limit) & (train_data[col] <= high_limit)) & filtered_entries    
+train_data = train_data[filtered_entries]
+
 # Scaling numerical features in real_data using MinMaxScaler
 minmax = MinMaxScaler()
 real_data[['age','avg_glucose_level','bmi']] = minmax.fit_transform(real_data[['age','avg_glucose_level','bmi']])
@@ -67,18 +79,6 @@ train_data = pd.get_dummies(train_data)
 # Checking for missing values in the train_data
 missing_values_count_train = train_data.isnull().sum()
 print("Train missing values count:", missing_values_count_train)
-
-# Filtering outliers in 'avg_glucose_level' and 'bmi' columns in train_data
-filtered_entries = np.array([True] * len(train_data))
-for col in ['avg_glucose_level','bmi']:
-    Q1 = train_data[col].quantile(0.25)
-    Q3 = train_data[col].quantile(0.75)
-    IQR = Q3 - Q1
-    low_limit = Q1 - (IQR * 1.5)
-    high_limit = Q3 + (IQR * 1.5)
-
-    filtered_entries = ((train_data[col] >= low_limit) & (train_data[col] <= high_limit)) & filtered_entries    
-train_data = train_data[filtered_entries]
 
 # Printing the columns in train_data after preprocessing
 print("Train data columns:", train_data.columns)
