@@ -5,33 +5,54 @@ from dataset import real_data
 # Importing necessary libraries
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 
 # Initializing and training the Random Forest Classifier
-model = RandomForestClassifier(n_estimators=100, random_state=42)
-model.fit(train_X, train_y)
+classifier = RandomForestClassifier(n_estimators=100, random_state=42)
+classifier.fit(train_X, train_y)
 
-# Making predictions on the training and validation data
-train_predictions = model.predict_proba(train_X)[:, 1]
-val_predictions = model.predict_proba(val_X)[:, 1]
-"""test_predictions = model.predict(test_X)"""
+# Making predictions on the training and validation data using the classifier
+train_predictions = classifier.predict_proba(train_X)[:, 1]
+val_predictions = classifier.predict_proba(val_X)[:, 1]
 
-# Calculating accuracy and classification report for the training data
+# Initializing and training the Random Forest Regressor
+regressor = RandomForestRegressor(n_estimators=100, random_state=42)
+regressor.fit(train_X, train_y)
+
+# Making predictions on the training and validation data using the regressor
+train_predictions_reg = regressor.predict(train_X)
+val_predictions_reg = regressor.predict(val_X)
+
+# Calculating accuracy and classification report for the training data using the classifier
 train_accuracy = accuracy_score(train_y, train_predictions.round())
 train_report = classification_report(train_y, train_predictions.round())
 
-# Calculating accuracy and classification report for the validation data
+# Calculating accuracy and classification report for the validation data using the classifier
 val_accuracy = accuracy_score(val_y, val_predictions.round())
 val_report = classification_report(val_y, val_predictions.round())
 
-# Printing the training and validation results
-print("Training Accuracy (without MinMaxScaler):", train_accuracy)
-print("Training Classification Report (without MinMaxScaler):\n", train_report)
-print("Validation Accuracy (without MinMaxScaler):", val_accuracy)
-print("Validation Classification Report (without MinMaxScaler):\n", val_report)
+# Calculating accuracy and classification report for the training data using the regressor
+train_accuracy_reg = accuracy_score(train_y, train_predictions_reg.round())
+train_report_reg = classification_report(train_y, train_predictions_reg.round())
+
+# Calculating accuracy and classification report for the validation data using the regressor
+val_accuracy_reg = accuracy_score(val_y, val_predictions_reg.round())
+val_report_reg = classification_report(val_y, val_predictions_reg.round())
+
+# Printing the training and validation results for the classifier
+print("Training Accuracy (Classifier, without MinMaxScaler):", train_accuracy)
+print("Training Classification Report (Classifier, without MinMaxScaler):\n", train_report)
+print("Validation Accuracy (Classifier, without MinMaxScaler):", val_accuracy)
+print("Validation Classification Report (Classifier, without MinMaxScaler):\n", val_report)
+
+# Printing the training and validation results for the regressor
+print("Training Accuracy (Regressor, without MinMaxScaler):", train_accuracy_reg)
+print("Training Classification Report (Regressor, without MinMaxScaler):\n", train_report_reg)
+print("Validation Accuracy (Regressor, without MinMaxScaler):", val_accuracy_reg)
+print("Validation Classification Report (Regressor, without MinMaxScaler):\n", val_report_reg)
 
 # Scaling numerical features in real_data using MinMaxScaler
 minmax = MinMaxScaler()
@@ -89,14 +110,7 @@ categorical_features = ['heart_disease', 'hypertension','gender_Female', 'gender
        'smoking_status_formerly smoked', 'smoking_status_never smoked',
        'smoking_status_smokes' ]
 
-"""test_stroke_features = ['age', 'hypertension', 'heart_disease', 'avg_glucose_level',
-       'bmi', 'gender_Female', 'gender_Male', 'gender_Other',
-       'ever_married_No', 'ever_married_Yes', 'work_type_Govt_job',
-       'work_type_Never_worked', 'work_type_Private',
-       'work_type_Self-employed', 'work_type_children', 'Residence_type_Rural',
-       'Residence_type_Urban', 'smoking_status_Unknown',
-       'smoking_status_formerly smoked', 'smoking_status_never smoked',
-       'smoking_status_smokes']"""       
+  
 
 # Preparing the features and target for modeling using train_data and test_data
 X = real_data[stroke_features]
@@ -112,32 +126,64 @@ test_X = test_X.astype(float)
 # Splitting the train_X and train_y into training and validation sets
 train_X, val_X, train_y, val_y = train_test_split(train_X, train_y, random_state=0)
 
-# Training the Random Forest Classifier on the training data
-model = RandomForestClassifier(n_estimators=100, random_state=42)
-model.fit(train_X, train_y)
+# Initializing and training the Random Forest Classifier
+classifier = RandomForestClassifier(n_estimators=100, random_state=42)
+classifier.fit(train_X, train_y)
 
-# Making predictions on the training and validation data
-train_predictions = model.predict(train_X)
-val_predictions = model.predict(val_X)
-test_predictions = model.predict(test_X)
+# Making predictions on the training and validation data using the classifier
+train_predictions = classifier.predict_proba(train_X)[:, 1]
+val_predictions = classifier.predict_proba(val_X)[:, 1]
 
-# Calculating accuracy and classification report for the training data
-train_accuracy = accuracy_score(train_y, train_predictions)
-train_report = classification_report(train_y, train_predictions)
+# Initializing and training the Random Forest Regressor
+regressor = RandomForestRegressor(n_estimators=100, random_state=42)
+regressor.fit(train_X, train_y)
 
-# Calculating accuracy and classification report for the validation data
-val_accuracy = accuracy_score(val_y, val_predictions)
-val_report = classification_report(val_y, val_predictions)
+# Making predictions on the training and validation data using the regressor
+train_predictions_reg = regressor.predict(train_X)
+val_predictions_reg = regressor.predict(val_X)
 
-# Printing the training and validation results
-print("Training Accuracy (with MinMaxScaler):", train_accuracy)
-print("Training Classification Report (with MinMaxScaler):\n", train_report)
-print("Validation Accuracy (with MinMaxScaler):", val_accuracy)
-print("Validation Classification Report (with MinMaxScaler):\n", val_report)
+# Calculating accuracy and classification report for the training data using the classifier
+train_accuracy = accuracy_score(train_y, train_predictions.round())
+train_report = classification_report(train_y, train_predictions.round())
 
-# Making predictions on the test data and saving the results to a CSV file
-test_predictions = model.predict_proba(test_X)[:, 1]  # Probabilities of positive class (stroke)
-test_data["stroke_prediction"] = test_predictions
-selected_columns = ['id', 'stroke_prediction']
+# Calculating accuracy and classification report for the validation data using the classifier
+val_accuracy = accuracy_score(val_y, val_predictions.round())
+val_report = classification_report(val_y, val_predictions.round())
+
+# Calculating accuracy and classification report for the training data using the regressor
+train_accuracy_reg = accuracy_score(train_y, train_predictions_reg.round())
+train_report_reg = classification_report(train_y, train_predictions_reg.round())
+
+# Calculating accuracy and classification report for the validation data using the regressor
+val_accuracy_reg = accuracy_score(val_y, val_predictions_reg.round())
+val_report_reg = classification_report(val_y, val_predictions_reg.round())
+
+# Printing the training and validation results for the classifier
+print("Training Accuracy (Classifier, with MinMaxScaler):", train_accuracy)
+print("Training Classification Report (Classifier, with MinMaxScaler):\n", train_report)
+print("Validation Accuracy (Classifier, with MinMaxScaler):", val_accuracy)
+print("Validation Classification Report (Classifier, with MinMaxScaler):\n", val_report)
+
+# Printing the training and validation results for the regressor
+print("Training Accuracy (Regressor, with MinMaxScaler):", train_accuracy_reg)
+print("Training Classification Report (Regressor, with MinMaxScaler):\n", train_report_reg)
+print("Validation Accuracy (Regressor, with MinMaxScaler):", val_accuracy_reg)
+print("Validation Classification Report (Regressor, with MinMaxScaler):\n", val_report_reg)
+
+# Aligning the test_X columns with the trained classifier's feature columns
+test_X_classifier = test_X.align(train_X, join='outer', axis=1, fill_value=0)[0]
+
+# Making predictions on the test data using the classifier
+test_predictions_classifier = classifier.predict_proba(test_X_classifier)[:, 1]  # Probabilities of positive class (stroke)
+test_data["stroke_prediction_classifier"] = test_predictions_classifier
+
+# Aligning the test_X columns with the trained regressor's feature columns
+test_X_regressor = test_X.align(train_X, join='outer', axis=1, fill_value=0)[0]
+
+# Making predictions on the test data using the regressor
+test_predictions_regressor = regressor.predict(test_X_regressor)
+test_data["stroke_prediction_regressor"] = test_predictions_regressor
+
+selected_columns = ['id', 'stroke_prediction_classifier', 'stroke_prediction_regressor']
 submission_data = test_data[selected_columns]
 submission_data.to_csv("predictions.csv", index=False)
