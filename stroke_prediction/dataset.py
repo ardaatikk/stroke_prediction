@@ -1,4 +1,5 @@
 # Importing necessary libraries
+import os
 import pandas as pd
 import numpy as np
 import seaborn as sns
@@ -6,8 +7,19 @@ import matplotlib.pyplot as plt
 from scipy import stats
 
 ### Getting the real data
-real_data = pd.read_csv("/Users/ardaatik/Downloads/project/data/healthcare-dataset-stroke-data.csv")
-real_data.head() # 5110 row x 12 column
+# Get the current directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Navigate back one level to the parent directory
+parent_dir = os.path.dirname(current_dir)
+
+# Define the relative path to the data file
+data_folder = os.path.join(parent_dir, "data")
+data_file_path = os.path.join(data_folder, "healthcare-dataset-stroke-data.csv")
+
+# Read the CSV file
+real_data = pd.read_csv(data_file_path)
+real_data.head()# 5110 row x 12 column
 
 # Checking the missing values
 missing_values_count = real_data.isnull().sum()

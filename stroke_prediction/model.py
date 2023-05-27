@@ -28,10 +28,10 @@ val_accuracy = accuracy_score(val_y, val_predictions.round())
 val_report = classification_report(val_y, val_predictions.round())
 
 # Printing the training and validation results
-print("Training Accuracy:", train_accuracy)
-print("Training Classification Report:\n", train_report)
-print("Validation Accuracy:", val_accuracy)
-print("Validation Classification Report:\n", val_report)
+print("Training Accuracy (without MinMaxScaler):", train_accuracy)
+print("Training Classification Report (without MinMaxScaler):\n", train_report)
+print("Validation Accuracy (without MinMaxScaler):", val_accuracy)
+print("Validation Classification Report (without MinMaxScaler):\n", val_report)
 
 # Scaling numerical features in real_data using MinMaxScaler
 minmax = MinMaxScaler()
@@ -130,14 +130,14 @@ val_accuracy = accuracy_score(val_y, val_predictions)
 val_report = classification_report(val_y, val_predictions)
 
 # Printing the training and validation results
-print("Training Accuracy:", train_accuracy)
-print("Training Classification Report:\n", train_report)
-print("Validation Accuracy:", val_accuracy)
-print("Validation Classification Report:\n", val_report)
+print("Training Accuracy (with MinMaxScaler):", train_accuracy)
+print("Training Classification Report (with MinMaxScaler):\n", train_report)
+print("Validation Accuracy (with MinMaxScaler):", val_accuracy)
+print("Validation Classification Report (with MinMaxScaler):\n", val_report)
 
 # Making predictions on the test data and saving the results to a CSV file
 test_predictions = model.predict_proba(test_X)[:, 1]  # Probabilities of positive class (stroke)
 test_data["stroke_prediction"] = test_predictions
 selected_columns = ['id', 'stroke_prediction']
 submission_data = test_data[selected_columns]
-submission_data.to_csv("submission.csv", index=False)
+submission_data.to_csv("predictions.csv", index=False)

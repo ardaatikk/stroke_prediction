@@ -2,12 +2,24 @@
 from dataset import real_data
 
 # Importing necessary libraries
+import os
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
 # Reading the train and test files into dataframes
-train_data = pd.read_csv("/Users/ardaatik/Downloads/project/data/train.csv")
-test_data = pd.read_csv("/Users/ardaatik/Downloads/project/data/test.csv")
+# Get the current directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Navigate back one level to the parent directory
+parent_dir = os.path.dirname(current_dir)
+
+# Define the relative paths to the train and test files
+train_file_path = os.path.join(parent_dir, "data", "train.csv")
+test_file_path = os.path.join(parent_dir, "data", "test.csv")
+
+# Read the train and test files into dataframes
+train_data = pd.read_csv(train_file_path)
+test_data = pd.read_csv(test_file_path)
 
 # Categorizing age values into different age groups
 train_data['age_bin'] = pd.cut(train_data['age'], bins=[0, 18, 40, 60], labels=['young', 'middle-aged', 'elderly'])
